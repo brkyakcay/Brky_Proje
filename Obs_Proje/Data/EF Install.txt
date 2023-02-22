@@ -1,0 +1,51 @@
+Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=NewDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+
+Install-Package microsoft.EntityFrameworkdCore -v 5.0.17
+Install-Package microsoft.EntityFrameworkdCore.Design -v 5.0.17
+Install-Package microsoft.EntityFrameworkdCore.SqlServer -v 5.0.17
+Install-Package microsoft.EntityFrameworkdCore.Tools -v 5.0.17
+
+Install-Package microsoft.EntityFrameworkCore 
+Install-Package microsoft.EntityFrameworkCore.Design 
+Install-Package microsoft.EntityFrameworkCore.SqlServer 
+Install-Package microsoft.EntityFrameworkCore.Tools 
+
+
+https://codeshare.io/9OEMk0
+
+
+ÖDEV
+-nullable(csproj.)
+-nullable-reference type
+
+-adres oluşturuyoruz bunu öbsye entegre edicez
+
+candemirel069@gmail.com
+----------------------------------------------
+var data = await _context.Ogrenciler.ToListAsync();
+
+            var viewData = from ogrenci in data
+                           select new OgrenciViewModel()
+                           {
+                               Id = ogrenci.Id, 
+                               TamAdi= ogrenci.Adi+" "+ogrenci.Soyadi,
+                               OkulNo = ogrenci.OkulNo,
+                               Bolum = ogrenci.Bolum,
+                               Adres = ogrenci.Adres,
+                               Dersler= ogrenci.Dersler,    
+                           };
+
+            return View(data);
+
+---------------------------------------------
+        public int Id { get; set; } 
+        public string TamAdi { get; set; } 
+        public int OkulNo { get; set; }
+
+        public virtual List<Ders> Dersler { get; set; }
+        public virtual Bolum Bolum { get; set; }
+        public virtual Adres Adres { get; set; }
+
+
+
+
