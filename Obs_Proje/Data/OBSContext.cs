@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Obs_Proje.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Obs_Proje.Data
 {
@@ -108,4 +110,22 @@ namespace Obs_Proje.Data
         public virtual Sehir Sehir { get; set; }
         public virtual List<Adres> Adresler { get; set; }
     }
+
+    //public class WebUser : IdentityUser
+    //{
+    //    public string Fullname { get; set; }
+    //}
+
+    //public class WebRole : IdentityRole
+    //{
+    //    public string Title { get; set; }
+    //}
+
+    //public class WebIdentityContext : IdentityDbContext
+    //{
+    //    public WebIdentityContext(DbContextOptions options) : base(options)
+    //    {
+    //    }
+    //}
+
 }

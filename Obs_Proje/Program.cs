@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Obs_Proje.Data;
+using Obs_Proje.Identity;
 
 namespace Obs_Proje
 {
@@ -13,13 +14,22 @@ namespace Obs_Proje
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+           
             var constr = builder.Configuration.GetConnectionString("ObsSqlServer");
-            builder.Services.AddDbContext<OBSContext>
-                (
-               options => options.UseSqlServer(constr)
-                ); 
-            
 
+            //builder.Services.AddDbContext<WebIdentityContext>(
+            //    options => options.UseSqlServer(constr)
+            //   );
+
+            builder.Services.AddDbContext<OBSContext>(
+                 options => options.UseSqlServer(constr)
+                );
+
+            builder.Services.AddIdentity<WebUser, WebRole>()
+                            .AddEntityFrameworkStores<WebIdentityContext>();
+
+
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -35,7 +45,8 @@ namespace Obs_Proje
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthorization();  // otorizeyþýn
+            app.UseAuthentication(); // otantikeyþýn
 
             app.MapControllerRoute(
                 name: "default",
