@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Obs_Proje.Data
 {
-    public class OBSContext:DbContext
+    public class OBSContext : IdentityDbContext<WebUser, WebRole, int >
     {
         public OBSContext(DbContextOptions options) : base(options)
         {
 
         }
 
+        
         public DbSet<Ogrenci> Ogrenciler { get; set; }
         public DbSet<Ders> Dersler { get; set; }
         public DbSet<Bolum> Bolumler { get; set; }
@@ -111,21 +112,14 @@ namespace Obs_Proje.Data
         public virtual List<Adres> Adresler { get; set; }
     }
 
-    //public class WebUser : IdentityUser
-    //{
-    //    public string Fullname { get; set; }
-    //}
+    public class WebUser : IdentityUser<int>
+    {
+        public string Fullname { get; set; }
+    }
 
-    //public class WebRole : IdentityRole
-    //{
-    //    public string Title { get; set; }
-    //}
-
-    //public class WebIdentityContext : IdentityDbContext
-    //{
-    //    public WebIdentityContext(DbContextOptions options) : base(options)
-    //    {
-    //    }
-    //}
+    public class WebRole : IdentityRole<int>
+    {
+        public string Title { get; set; }
+    }
 
 }

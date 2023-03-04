@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Obs_Proje.Data;
-using Obs_Proje.Identity;
+//using Obs_Proje.Identity;
 
 namespace Obs_Proje
 {
@@ -17,16 +17,43 @@ namespace Obs_Proje
            
             var constr = builder.Configuration.GetConnectionString("ObsSqlServer");
 
-            //builder.Services.AddDbContext<WebIdentityContext>(
-            //    options => options.UseSqlServer(constr)
-            //   );
-
+            
             builder.Services.AddDbContext<OBSContext>(
                  options => options.UseSqlServer(constr)
                 );
 
-            builder.Services.AddIdentity<WebUser, WebRole>()
-                            .AddEntityFrameworkStores<WebIdentityContext>();
+            builder.Services.AddIdentity<WebUser, WebRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequiredUniqueChars = 0; /// TODO: Nedir?
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<OBSContext>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = new PathString("/Account/Login");
+                options.LogoutPath = new PathString("/Account/Logout");
+                options.AccessDeniedPath = new PathString("/Home/AccessDenied");
+
+                options.Cookie = new()
+                {
+                    Name = "OBSCookie",
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Lax,
+                    SecurePolicy = CookieSecurePolicy.Always,
+                };
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan= TimeSpan.FromDays(30);   
+
+                // http security, cookie base security
+            });
+
+            
 
 
             
@@ -43,10 +70,11 @@ namespace Obs_Proje
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseRouting(); 
 
-            app.UseAuthorization();  // otorizeyþýn
             app.UseAuthentication(); // otantikeyþýn
+            app.UseAuthorization();  // otorizeyþýn
+           
 
             app.MapControllerRoute(
                 name: "default",
