@@ -12,8 +12,8 @@ using Obs_Proje.Data;
 namespace Obs_Proje.Migrations
 {
     [DbContext(typeof(OBSContext))]
-    [Migration("20230304184548_Identity_Added")]
-    partial class Identity_Added
+    [Migration("20230305145733_InitDB")]
+    partial class InitDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace Obs_Proje.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BolumDers", b =>
-                {
-                    b.Property<int>("BolumlerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DerslerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BolumlerId", "DerslerId");
-
-                    b.HasIndex("DerslerId");
-
-                    b.ToTable("BolumDers");
-                });
 
             modelBuilder.Entity("DersOgrenci", b =>
                 {
@@ -209,13 +194,15 @@ namespace Obs_Proje.Migrations
                     b.Property<string>("Adi")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BolumId")
+                    b.Property<int?>("BolumId")
                         .HasColumnType("int");
 
                     b.Property<int?>("OgrenciViewModelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BolumId");
 
                     b.HasIndex("OgrenciViewModelId");
 
@@ -429,21 +416,6 @@ namespace Obs_Proje.Migrations
                     b.ToTable("OgrenciViewModel");
                 });
 
-            modelBuilder.Entity("BolumDers", b =>
-                {
-                    b.HasOne("Obs_Proje.Data.Bolum", null)
-                        .WithMany()
-                        .HasForeignKey("BolumlerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Obs_Proje.Data.Ders", null)
-                        .WithMany()
-                        .HasForeignKey("DerslerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DersOgrenci", b =>
                 {
                     b.HasOne("Obs_Proje.Data.Ders", null)
@@ -523,9 +495,15 @@ namespace Obs_Proje.Migrations
 
             modelBuilder.Entity("Obs_Proje.Data.Ders", b =>
                 {
+                    b.HasOne("Obs_Proje.Data.Bolum", "Bolum")
+                        .WithMany("Dersler")
+                        .HasForeignKey("BolumId");
+
                     b.HasOne("Obs_Proje.Models.OgrenciViewModel", null)
                         .WithMany("Dersler")
                         .HasForeignKey("OgrenciViewModelId");
+
+                    b.Navigation("Bolum");
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Ilce", b =>
@@ -576,6 +554,8 @@ namespace Obs_Proje.Migrations
 
             modelBuilder.Entity("Obs_Proje.Data.Bolum", b =>
                 {
+                    b.Navigation("Dersler");
+
                     b.Navigation("Ogrenciler");
                 });
 

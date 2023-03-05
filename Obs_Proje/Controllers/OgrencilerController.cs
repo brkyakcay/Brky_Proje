@@ -24,20 +24,23 @@ namespace Obs_Proje.Controllers
         {
             //return View(await _context.Ogrenciler.ToListAsync());
 
-            var data = await _context.Ogrenciler.ToListAsync();
+            var data = await _context.Ogrenciler
+                .Include(x => x.Bolum)
+                .Include(x => x.Dersler)
+                .ToListAsync();
 
             var viewData = from ogrenci in data
                            select new OgrenciViewModel()
                            {
                                Id = ogrenci.Id,
-                               TamAdi = ogrenci.Adi + " " + ogrenci.Soyadi,
+                               AdiSoyadi = ogrenci.Adi + " " + ogrenci.Soyadi,
                                OkulNo = ogrenci.OkulNo,
-                               Bolum = ogrenci.Bolum,
-                               Adres = ogrenci.Adres,
-                               Dersler = ogrenci.Dersler,
+                               BolumAdi = ogrenci.Bolum.Adi,
+                               DersSayisi=ogrenci.Dersler.Count(),
+                               Dersleri= String.Join(", ", ogrenci.Dersler.Select(ders=>ders.Adi))
                            };
 
-            return View(data);
+            return View(viewData);
         }
 
         // GET: Ogrenciler/Details/5

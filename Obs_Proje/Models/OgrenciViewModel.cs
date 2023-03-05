@@ -5,11 +5,11 @@ namespace Obs_Proje.Models
     public class OgrenciViewModel
     {
         public int Id { get; set; }
-        public string TamAdi { get; set; }
+        public string AdiSoyadi { get; set; }
         public int OkulNo { get; set; }
+        public int DersSayisi { get; set; }
+        public string Dersleri { get; set; }
 
-        public virtual List<Ders> Dersler { get; set; }
-        public virtual Bolum Bolum { get; set; }
-        public virtual Adres Adres { get; set; }
+        public virtual string BolumAdi { get; set; }
     }
 }

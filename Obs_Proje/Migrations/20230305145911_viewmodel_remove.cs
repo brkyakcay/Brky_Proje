@@ -5,10 +5,29 @@
 namespace Obs_Proje.Migrations
 {
     /// <inheritdoc />
-    public partial class MyMigration : Migration
+    public partial class viewmodel_remove : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Dersler_OgrenciViewModel_OgrenciViewModelId",
+                table: "Dersler");
+
+            migrationBuilder.DropTable(
+                name: "OgrenciViewModel");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Dersler_OgrenciViewModelId",
+                table: "Dersler");
+
+            migrationBuilder.DropColumn(
+                name: "OgrenciViewModelId",
+                table: "Dersler");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
                 name: "OgrenciViewModelId",
@@ -22,10 +41,10 @@ namespace Obs_Proje.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TamAdi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OkulNo = table.Column<int>(type: "int", nullable: false),
+                    AdresId = table.Column<int>(type: "int", nullable: true),
                     BolumId = table.Column<int>(type: "int", nullable: true),
-                    AdresId = table.Column<int>(type: "int", nullable: true)
+                    OkulNo = table.Column<int>(type: "int", nullable: false),
+                    TamAdi = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,25 +82,6 @@ namespace Obs_Proje.Migrations
                 column: "OgrenciViewModelId",
                 principalTable: "OgrenciViewModel",
                 principalColumn: "Id");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Dersler_OgrenciViewModel_OgrenciViewModelId",
-                table: "Dersler");
-
-            migrationBuilder.DropTable(
-                name: "OgrenciViewModel");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Dersler_OgrenciViewModelId",
-                table: "Dersler");
-
-            migrationBuilder.DropColumn(
-                name: "OgrenciViewModelId",
-                table: "Dersler");
         }
     }
 }
