@@ -12,7 +12,7 @@ using Obs_Proje.Data;
 namespace Obs_Proje.Migrations
 {
     [DbContext(typeof(OBSContext))]
-    [Migration("20230305145733_InitDB")]
+    [Migration("20230320100150_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />
@@ -197,14 +197,9 @@ namespace Obs_Proje.Migrations
                     b.Property<int?>("BolumId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OgrenciViewModelId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BolumId");
-
-                    b.HasIndex("OgrenciViewModelId");
 
                     b.ToTable("Dersler");
                 });
@@ -387,35 +382,6 @@ namespace Obs_Proje.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Obs_Proje.Models.OgrenciViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AdresId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BolumId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OkulNo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TamAdi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdresId");
-
-                    b.HasIndex("BolumId");
-
-                    b.ToTable("OgrenciViewModel");
-                });
-
             modelBuilder.Entity("DersOgrenci", b =>
                 {
                     b.HasOne("Obs_Proje.Data.Ders", null)
@@ -499,10 +465,6 @@ namespace Obs_Proje.Migrations
                         .WithMany("Dersler")
                         .HasForeignKey("BolumId");
 
-                    b.HasOne("Obs_Proje.Models.OgrenciViewModel", null)
-                        .WithMany("Dersler")
-                        .HasForeignKey("OgrenciViewModelId");
-
                     b.Navigation("Bolum");
                 });
 
@@ -532,21 +494,6 @@ namespace Obs_Proje.Migrations
                     b.Navigation("Bolum");
                 });
 
-            modelBuilder.Entity("Obs_Proje.Models.OgrenciViewModel", b =>
-                {
-                    b.HasOne("Obs_Proje.Data.Adres", "Adres")
-                        .WithMany()
-                        .HasForeignKey("AdresId");
-
-                    b.HasOne("Obs_Proje.Data.Bolum", "Bolum")
-                        .WithMany()
-                        .HasForeignKey("BolumId");
-
-                    b.Navigation("Adres");
-
-                    b.Navigation("Bolum");
-                });
-
             modelBuilder.Entity("Obs_Proje.Data.Adres", b =>
                 {
                     b.Navigation("Ogrenciler");
@@ -567,11 +514,6 @@ namespace Obs_Proje.Migrations
             modelBuilder.Entity("Obs_Proje.Data.Sehir", b =>
                 {
                     b.Navigation("Ilceler");
-                });
-
-            modelBuilder.Entity("Obs_Proje.Models.OgrenciViewModel", b =>
-                {
-                    b.Navigation("Dersler");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,6 +18,7 @@ namespace Obs_Proje.Data
         public DbSet<Adres> Adresler { get; set; }
         public DbSet<Sehir> Sehirler { get; set; }
         public DbSet<Ilce> Ilceler { get; set; }
+        public DbSet<Ogretmen> Ogretmenler { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
