@@ -178,6 +178,13 @@ namespace Obs_Proje.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Bolumler");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adi = "Bilgisayar Mühendisliği"
+                        });
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Ders", b =>
@@ -204,6 +211,29 @@ namespace Obs_Proje.Migrations
                     b.HasIndex("OgretmenId");
 
                     b.ToTable("Dersler");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adi = "Front-End Development",
+                            BolumId = 1,
+                            OgretmenId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adi = "Asp.Net Web Development",
+                            BolumId = 1,
+                            OgretmenId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Adi = "Database Management",
+                            BolumId = 1,
+                            OgretmenId = 1
+                        });
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Ilce", b =>
@@ -262,6 +292,16 @@ namespace Obs_Proje.Migrations
                         .IsUnique();
 
                     b.ToTable("Ogrenciler");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adi = "Berkay",
+                            BolumId = 1,
+                            OkulNo = 210219056,
+                            Soyadi = "Akçay"
+                        });
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Ogretmen", b =>
@@ -294,6 +334,16 @@ namespace Obs_Proje.Migrations
                     b.HasIndex("BolumId");
 
                     b.ToTable("Ogretmenler");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adi = "Can",
+                            BolumId = 1,
+                            SicilNo = 1,
+                            Soyadi = "Demirel"
+                        });
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Sehir", b =>
@@ -499,11 +549,13 @@ namespace Obs_Proje.Migrations
                         .WithMany("Dersler")
                         .HasForeignKey("BolumId");
 
-                    b.HasOne("Obs_Proje.Data.Ogretmen", null)
+                    b.HasOne("Obs_Proje.Data.Ogretmen", "Ogretmen")
                         .WithMany("Dersler")
                         .HasForeignKey("OgretmenId");
 
                     b.Navigation("Bolum");
+
+                    b.Navigation("Ogretmen");
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Ilce", b =>

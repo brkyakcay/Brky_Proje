@@ -36,6 +36,7 @@ namespace Obs_Proje.Controllers
                                AdiSoyadi = ogrenci.Adi + " " + ogrenci.Soyadi,
                                OkulNo = ogrenci.OkulNo,
                                BolumAdi = ogrenci.Bolum.Adi,
+                            
                                DersSayisi=ogrenci.Dersler.Count(),
                                Dersleri= String.Join(", ", ogrenci.Dersler.Select(ders=>ders.Adi))
                            };

@@ -31,6 +31,27 @@ namespace Obs_Proje.Data
             modelBuilder.Entity<Ilce>()
                 .HasIndex(col => new { col.SehirId, col.Adi })
                 .IsUnique();
+
+            modelBuilder.Entity<Ders>().HasData(
+                new Ders { Id = 1, OgretmenId =  1, BolumId=1,   Adi="Front-End Development" },
+                new Ders { Id = 2, OgretmenId = 1,  BolumId = 1, Adi = "Asp.Net Web Development"},
+                new Ders { Id =3,  OgretmenId =1,   BolumId = 1, Adi ="Database Management"}
+                );
+
+            modelBuilder.Entity<Bolum>().HasData(
+                new Bolum { Id=1, Adi="Bilgisayar Mühendisliği"}
+                );
+
+            modelBuilder.Entity<Ogrenci>().HasData(
+                new Ogrenci { Id=1, Adi="Berkay", Soyadi="Akçay", BolumId= 1, OkulNo=210219056 }
+                );
+
+            modelBuilder.Entity<Ogretmen>().HasData(
+                new Ogretmen { Id=1, Adi="Can", Soyadi="Demirel", BolumId=1, SicilNo=001  } 
+                );
+
+
+           
         }
 
 

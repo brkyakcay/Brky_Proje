@@ -187,25 +187,6 @@ namespace Obs_Proje.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Dersler",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Adi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BolumId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Dersler", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Dersler_Bolumler_BolumId",
-                        column: x => x.BolumId,
-                        principalTable: "Bolumler",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Ilceler",
                 columns: table => new
                 {
@@ -270,6 +251,58 @@ namespace Obs_Proje.Migrations
                         name: "FK_Ogrenciler_Bolumler_BolumId",
                         column: x => x.BolumId,
                         principalTable: "Bolumler",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ogretmenler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Adi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Soyadi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SicilNo = table.Column<int>(type: "int", nullable: false),
+                    BolumId = table.Column<int>(type: "int", nullable: true),
+                    AdresId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ogretmenler", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ogretmenler_Adresler_AdresId",
+                        column: x => x.AdresId,
+                        principalTable: "Adresler",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Ogretmenler_Bolumler_BolumId",
+                        column: x => x.BolumId,
+                        principalTable: "Bolumler",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Dersler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Adi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BolumId = table.Column<int>(type: "int", nullable: true),
+                    OgretmenId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dersler", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Dersler_Bolumler_BolumId",
+                        column: x => x.BolumId,
+                        principalTable: "Bolumler",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Dersler_Ogretmenler_OgretmenId",
+                        column: x => x.OgretmenId,
+                        principalTable: "Ogretmenler",
                         principalColumn: "Id");
                 });
 
@@ -347,6 +380,11 @@ namespace Obs_Proje.Migrations
                 column: "BolumId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Dersler_OgretmenId",
+                table: "Dersler",
+                column: "OgretmenId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DersOgrenci_OgrencilerId",
                 table: "DersOgrenci",
                 column: "OgrencilerId");
@@ -373,6 +411,16 @@ namespace Obs_Proje.Migrations
                 table: "Ogrenciler",
                 column: "Id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogretmenler_AdresId",
+                table: "Ogretmenler",
+                column: "AdresId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogretmenler_BolumId",
+                table: "Ogretmenler",
+                column: "BolumId");
         }
 
         /// <inheritdoc />
@@ -407,6 +455,9 @@ namespace Obs_Proje.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ogrenciler");
+
+            migrationBuilder.DropTable(
+                name: "Ogretmenler");
 
             migrationBuilder.DropTable(
                 name: "Adresler");
