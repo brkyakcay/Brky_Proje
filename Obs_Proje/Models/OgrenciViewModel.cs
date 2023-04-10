@@ -12,4 +12,6 @@ namespace Obs_Proje.Models
 
         public virtual string BolumAdi { get; set; }
     }
+
+    
 }

@@ -24,7 +24,7 @@ namespace Obs_Proje.Controllers
         {
             //return View(await _context.Ogrenciler.ToListAsync());
 
-            var data = await _context.Ogrenciler
+            var data = await _context.Ogrenciler               
                 .Include(x => x.Bolum)
                 .Include(x => x.Dersler)
                 .ToListAsync();
@@ -38,7 +38,7 @@ namespace Obs_Proje.Controllers
                                BolumAdi = ogrenci.Bolum.Adi,
                             
                                DersSayisi=ogrenci.Dersler.Count(),
-                               Dersleri= String.Join(", ", ogrenci.Dersler.Select(ders=>ders.Adi))
+                               Dersleri= String.Join(" , ", ogrenci.Dersler.Select(ders=>ders.Adi))
                            };
 
             return View(viewData);
@@ -73,7 +73,7 @@ namespace Obs_Proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Adi,Soyadi,OkulNo,Id")] Ogrenci ogrenci)
+        public async Task<IActionResult> Create([Bind("Adi,Soyadi,OkulNo,Bolumu,Id")] Ogrenci ogrenci)
         {
             if (ModelState.IsValid)
             {

@@ -48,6 +48,8 @@ namespace Obs_Proje.Data
                 new Ogretmen { Id = 1, Adi = "Can", Soyadi = "Demirel", BolumId = 1, SicilNo = 001 }
                 );
         }
+
+        public DbSet<Obs_Proje.Models.OgrenciViewModel> OgrenciViewModel { get; set; }
     }
 
     public class WebUser : IdentityUser<int>

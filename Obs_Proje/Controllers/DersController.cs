@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obs_Proje.Data;
+using Obs_Proje.Models;
 
 namespace Obs_Proje.Controllers
 {
@@ -21,8 +22,26 @@ namespace Obs_Proje.Controllers
         // GET: Ders
         public async Task<IActionResult> Index()
         {
-            var oBSContext = _context.Dersler.Include(d => d.Bolum).Include(d => d.Ogretmen);
-            return View(await oBSContext.ToListAsync());
+            var oBSContext = _context.Dersler
+                .Include(d => d.Bolum)
+                .Include(d => d.Ogretmen)
+                .ToListAsync();
+
+            var viewData = from ders in await oBSContext
+                           select new DersViewModel()
+                           {
+                               Id = ders.Id,
+                               Adi = ders.Adi,
+                               BolumAdi = ders.Bolum.Adi,
+                               OgretmenAdiSoyadi = ders.Ogretmen.Adi+ " "+ ders.Ogretmen.Soyadi,
+
+                           }; 
+          
+            return View(viewData);  
+
+               //return View(await oBSContext.ToListAsync());
+
+            
         }
 
         // GET: Ders/Details/5

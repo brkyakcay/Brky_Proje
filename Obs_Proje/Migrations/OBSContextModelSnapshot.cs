@@ -17,7 +17,7 @@ namespace Obs_Proje.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -464,6 +464,34 @@ namespace Obs_Proje.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Obs_Proje.Models.OgrenciViewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdiSoyadi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BolumAdi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DersSayisi")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Dersleri")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OkulNo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OgrenciViewModel");
                 });
 
             modelBuilder.Entity("DersOgrenci", b =>
