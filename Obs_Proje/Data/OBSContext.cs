@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Obs_Proje.Models;
-//using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Obs_Proje.Data
 {
-    //    public class OBSContext : IdentityDbContext<WebUser, WebRole, int>
-    public class OBSContext : DbContext
+        public class OBSContext : IdentityDbContext<WebUser, WebRole, int>
+    //public class OBSContext : DbContext
     {
         public OBSContext(DbContextOptions options) : base(options) { }
 
@@ -50,14 +50,14 @@ namespace Obs_Proje.Data
         }
     }
 
-    //public class WebUser : IdentityUser<int>
-    //{
-    //    public string Fullname { get; set; }
-    //}
+    public class WebUser : IdentityUser<int>
+    {
+        public string Fullname { get; set; }
+    }
 
-    //public class WebRole : IdentityRole<int>
-    //{
-    //    public string Title { get; set; }
-    //}
+    public class WebRole : IdentityRole<int>
+    {
+        public string Title { get; set; }
+    }
 
 }

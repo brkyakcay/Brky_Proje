@@ -22,17 +22,17 @@ namespace Obs_Proje
                  options => options.UseSqlServer(constr)
                 );
 
-            //builder.Services.AddIdentity<WebUser, WebRole>(options =>
-            //{
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequiredLength = 1;
-            //    options.Password.RequiredUniqueChars = 0; /// TODO: Nedir?
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
+            builder.Services.AddIdentity<WebUser, WebRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequiredUniqueChars = 0; /// TODO: Nedir?
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
 
-            //    options.User.RequireUniqueEmail = true;
-            //}).AddEntityFrameworkStores<OBSContext>();
+                options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<OBSContext>();
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
