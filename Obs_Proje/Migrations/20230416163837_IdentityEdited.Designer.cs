@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obs_Proje.Data;
 
@@ -11,9 +12,11 @@ using Obs_Proje.Data;
 namespace Obs_Proje.Migrations
 {
     [DbContext(typeof(OBSContext))]
-    partial class OBSContextModelSnapshot : ModelSnapshot
+    [Migration("20230416163837_IdentityEdited")]
+    partial class IdentityEdited
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,14 +304,6 @@ namespace Obs_Proje.Migrations
                             BolumId = 1,
                             OkulNo = 210219056,
                             Soyadi = "Akçay"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Adi = "Yusuf",
-                            BolumId = 1,
-                            OkulNo = 210219034,
-                            Soyadi = "Ekinci"
                         });
                 });
 

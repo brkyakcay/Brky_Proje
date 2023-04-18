@@ -40,7 +40,9 @@ namespace Obs_Proje.Controllers
         {
             var newUser = new WebUser
             {
-                Fullname = model.Fullname,
+
+                //Fullname = model.Fullname,
+                Name=model.Name,
                 Email = model.Email,
                 UserName = model.UserName
             };

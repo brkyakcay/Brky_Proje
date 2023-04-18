@@ -13,8 +13,12 @@ namespace Obs_Proje.Models
         public string UserName { get; set; }
 
         [Required]
-        [DisplayName("Ad Soyad")]
-        public string Fullname { get; set; }
+        [DisplayName("Ad")]
+        public string Name { get; set; }
+
+        [Required]
+        [DisplayName("Soyad")]
+        public string Surname { get; set; }
 
         [Required]
         [EmailAddress]

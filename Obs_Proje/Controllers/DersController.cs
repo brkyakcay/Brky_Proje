@@ -35,8 +35,10 @@ namespace Obs_Proje.Controllers
                                BolumAdi = ders.Bolum.Adi,
                                OgretmenAdiSoyadi = ders.Ogretmen.Adi+ " "+ ders.Ogretmen.Soyadi,
 
-                           }; 
-          
+                           };
+            var DersSayisi = _context.Dersler.Count();
+            ViewBag.DersSayisi = DersSayisi;
+
             return View(viewData);  
 
                //return View(await oBSContext.ToListAsync());

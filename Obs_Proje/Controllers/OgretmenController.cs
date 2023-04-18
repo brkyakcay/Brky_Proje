@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obs_Proje.Data;
+using Obs_Proje.Models;
 
 namespace Obs_Proje.Controllers
 {
@@ -21,8 +22,28 @@ namespace Obs_Proje.Controllers
         // GET: Ogretmen
         public async Task<IActionResult> Index()
         {
-            var oBSContext = _context.Ogretmenler.Include(o => o.Adres).Include(o => o.Bolum);
-            return View(await oBSContext.ToListAsync());
+            var oBSContext = _context.Ogretmenler
+                .Include(o => o.Adres)
+                .Include(o => o.Bolum)
+                .Include(o => o.Dersler)
+                .ToListAsync();
+
+            var viewData = from Ogretmen in await oBSContext
+                           select new OgretmenViewModel()
+                           {
+                               Id = Ogretmen.Id,
+                               Adi = Ogretmen.Adi,
+                               Soyadi = Ogretmen.Soyadi,
+                               SicilNo = Ogretmen.SicilNo,
+                               BolumAdi = Ogretmen.Bolum.Adi,
+                               VerdigiDersler = String.Join(" , ", Ogretmen.Dersler.Select(ders => ders.Adi))
+                           };
+
+            var OgretmenSayisi = _context.Ogretmenler.Count();
+            ViewBag.OgretmenSayisi = OgretmenSayisi;
+
+            return View(viewData);  
+            //return View(await oBSContext.ToListAsync());
         }
 
         // GET: Ogretmen/Details/5

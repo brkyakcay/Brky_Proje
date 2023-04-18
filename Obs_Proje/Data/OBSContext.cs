@@ -41,7 +41,8 @@ namespace Obs_Proje.Data
                 );
 
             modelBuilder.Entity<Ogrenci>().HasData(
-                new Ogrenci { Id = 1, Adi = "Berkay", Soyadi = "Akçay", BolumId = 1, OkulNo = 210219056 }
+                new Ogrenci { Id = 1, Adi = "Berkay", Soyadi = "Akçay", BolumId = 1, OkulNo = 210219056 },
+                new Ogrenci { Id = 2, Adi = "Yusuf", Soyadi = "Ekinci", BolumId = 1, OkulNo = 210219034 }
                 );
 
             modelBuilder.Entity<Ogretmen>().HasData(
@@ -54,7 +55,10 @@ namespace Obs_Proje.Data
 
     public class WebUser : IdentityUser<int>
     {
-        public string Fullname { get; set; }
+        //public string Fullname { get; set; }
+        public string Name { get; set; } 
+        public string Surname { get; set; } 
+
     }
 
     public class WebRole : IdentityRole<int>

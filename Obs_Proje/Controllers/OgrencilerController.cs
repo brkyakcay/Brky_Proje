@@ -33,13 +33,18 @@ namespace Obs_Proje.Controllers
                            select new OgrenciViewModel()
                            {
                                Id = ogrenci.Id,
-                               AdiSoyadi = ogrenci.Adi + " " + ogrenci.Soyadi,
+                               Adi= ogrenci.Adi,
+                               Soyadi= ogrenci.Soyadi,  
                                OkulNo = ogrenci.OkulNo,
                                BolumAdi = ogrenci.Bolum.Adi,
                             
                                DersSayisi=ogrenci.Dersler.Count(),
                                Dersleri= String.Join(" , ", ogrenci.Dersler.Select(ders=>ders.Adi))
                            };
+
+            var OgrenciSayisi = _context.Ogrenciler.Count();
+            ViewBag.OgrenciSayisi = OgrenciSayisi;
+            //return View(OgrenciSayisi);
 
             return View(viewData);
         }

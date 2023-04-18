@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obs_Proje.Data;
 
@@ -11,9 +12,11 @@ using Obs_Proje.Data;
 namespace Obs_Proje.Migrations
 {
     [DbContext(typeof(OBSContext))]
-    partial class OBSContextModelSnapshot : ModelSnapshot
+    [Migration("20230418163327_OgrenciUpdate")]
+    partial class OgrenciUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
