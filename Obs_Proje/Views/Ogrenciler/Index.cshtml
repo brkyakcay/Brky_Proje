@@ -5,28 +5,14 @@
 }
 
 <h1>Öğrenci Listesi</h1>
-@*<style>
-    a:link, a:visited {
-        background-color: #f44336;
-        color: white;
-        padding: 14px 25px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-    }
 
-    a:hover, a:active {
-        background-color: red;
-    }
-</style>*@
 <p>
     <a asp-action="Create">Yeni Öğrenci Kaydet</a>
-    @*<a href="https://localhost:7042/Ogrenciler/Create" target="_create">This is a link</a>*@
-</p>
+    <h5>Sisteme kayıtlı öğrenci sayısı: @ViewBag.OgrenciSayisi</h5>
+    <partial name="_Search" ></partial>
 <table class="table">
     <thead>
         <tr>
-            <h5>Toplam öğrenci sayısı: @ViewBag.OgrenciSayisi</h5>
             <th>
                 @Html.DisplayNameFor(model => model.Adi)
             </th>

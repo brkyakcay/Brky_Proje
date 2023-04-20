@@ -20,7 +20,7 @@ namespace Obs_Proje.Controllers
         }
 
         // GET: Ogrenciler
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Adi = "")
         {
             //return View(await _context.Ogrenciler.ToListAsync());
 
@@ -44,6 +44,15 @@ namespace Obs_Proje.Controllers
 
             var OgrenciSayisi = _context.Ogrenciler.Count();
             ViewBag.OgrenciSayisi = OgrenciSayisi;
+
+            //var ogrenciler = from o in _context.Ogrenciler
+            //                 select o;
+
+            //if (!string.IsNullOrEmpty(Adi))
+            //{
+            //    ogrenciler = ogrenciler.Where(o => o.Adi.Contains(Adi));
+            //}
+
             //return View(OgrenciSayisi);
 
             return View(viewData);
