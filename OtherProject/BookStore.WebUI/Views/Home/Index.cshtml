@@ -1,0 +1,75 @@
+﻿@using BookStore.WebUI.Code
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model IEnumerable<BookItemViewModel>
+@inject IListService lstSrv
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<form action="Search">
+
+    <div class="row">
+        <div class="col">
+            <input name="Name" class="form-control" autocomplete="off" />
+        </div>
+        <div class="col">
+            <select name="CategoryId" class="form-control" asp-items="lstSrv.GetCategoryList()">
+                <option>Please Select a Category</option>
+            </select>
+        </div>
+        <div class="col">
+            <select name="AuthorId" class="form-control" asp-items="lstSrv.GetAuthorList()">
+                <option>Please Select an Author</option>
+            </select>
+        </div>
+        <div class="col">
+            <select name="PublisherID" class="form-control" asp-items="lstSrv.GetPublisherList()">
+                <option>Please Select a Publisher</option>
+            </select>
+        </div>
+        <div class="col">
+            <input value="Search" type="submit" class="btn btn-secondary" />
+        </div>
+    </div>
+
+
+</form>
+
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10">
+
+++    qq         ----
+            <div class="row p-2 bg-white border rounded">
+                <div class="col-md-1 mt-1"><img class="img-fluid img-responsive product-image" src="/images/book.png"></div>
+                <div class="col-md-6 mt-1">
+                    <h5>Quant olap shirts</h5>
+                    <div class="d-flex flex-row">
+                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                        <span>yazar</span>
+                    </div>
+
+                    <div class="mt-1 mb-1 spec-1"><span>100 page</span><span class="dot"></span><span>sanat tarihi</span><span class="dot"></span><span>Best finish<br></span></div>
+                    <div class="mt-1 mb-1 spec-1">
+                        
+
+                        <span class="badge bg-primary">100 page</span>
+                        <span class="badge bg-secondary">web</span>
+                        <span class="badge bg-success">iş bankası</span>
+                    </div>
+                    <p class="text-justify text-truncate para mb-0">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
+                </div>
+               
+            </div>
+           ----
+           @foreach (var item in Model)
+            {
+
+                @Html.PartialAsync("_BookItem", item);                
+            }   
+
+        </div>
+    </div>
+</div>
