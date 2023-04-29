@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Obs_Proje.Migrations
 {
     /// <inheritdoc />
@@ -33,7 +35,8 @@ namespace Obs_Proje.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Fullname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -65,6 +68,53 @@ namespace Obs_Proje.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bolumler", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Departman",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Adi = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departman", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OgrenciViewModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Adi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Soyadi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OkulNo = table.Column<int>(type: "int", nullable: false),
+                    DersSayisi = table.Column<int>(type: "int", nullable: false),
+                    Dersleri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BolumAdi = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OgrenciViewModel", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PersonelViewModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Adi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Soyadı = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SicilNo = table.Column<int>(type: "int", nullable: false),
+                    DepartmanAdi = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonelViewModel", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,6 +232,28 @@ namespace Obs_Proje.Migrations
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Personel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Adi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Soyadi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SicilNo = table.Column<int>(type: "int", nullable: false),
+                    DepartmanId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Personel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Personel_Departman_DepartmanId",
+                        column: x => x.DepartmanId,
+                        principalTable: "Departman",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -330,6 +402,45 @@ namespace Obs_Proje.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Bolumler",
+                columns: new[] { "Id", "Adi" },
+                values: new object[] { 1, "Bilgisayar Mühendisliği" });
+
+            migrationBuilder.InsertData(
+                table: "Departman",
+                columns: new[] { "Id", "Adi" },
+                values: new object[] { 1, "İdari İşler" });
+
+            migrationBuilder.InsertData(
+                table: "Ogrenciler",
+                columns: new[] { "Id", "Adi", "AdresId", "BolumId", "OkulNo", "Soyadi" },
+                values: new object[,]
+                {
+                    { 1, "Berkay", null, 1, 210219056, "Akçay" },
+                    { 2, "Yusuf", null, 1, 210219034, "Ekinci" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Ogretmenler",
+                columns: new[] { "Id", "Adi", "AdresId", "BolumId", "SicilNo", "Soyadi" },
+                values: new object[] { 1, "Can", null, 1, 1, "Demirel" });
+
+            migrationBuilder.InsertData(
+                table: "Personel",
+                columns: new[] { "Id", "Adi", "DepartmanId", "SicilNo", "Soyadi" },
+                values: new object[] { 1, "Mustafa", 1, 1, "Nair" });
+
+            migrationBuilder.InsertData(
+                table: "Dersler",
+                columns: new[] { "Id", "Adi", "BolumId", "OgretmenId" },
+                values: new object[,]
+                {
+                    { 1, "Front-End Development", 1, 1 },
+                    { 2, "Asp.Net Web Development", 1, 1 },
+                    { 3, "Database Management", 1, 1 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Adresler_IlceId",
                 table: "Adresler",
@@ -421,6 +532,11 @@ namespace Obs_Proje.Migrations
                 name: "IX_Ogretmenler_BolumId",
                 table: "Ogretmenler",
                 column: "BolumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personel_DepartmanId",
+                table: "Personel",
+                column: "DepartmanId");
         }
 
         /// <inheritdoc />
@@ -445,6 +561,15 @@ namespace Obs_Proje.Migrations
                 name: "DersOgrenci");
 
             migrationBuilder.DropTable(
+                name: "OgrenciViewModel");
+
+            migrationBuilder.DropTable(
+                name: "Personel");
+
+            migrationBuilder.DropTable(
+                name: "PersonelViewModel");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -455,6 +580,9 @@ namespace Obs_Proje.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ogrenciler");
+
+            migrationBuilder.DropTable(
+                name: "Departman");
 
             migrationBuilder.DropTable(
                 name: "Ogretmenler");

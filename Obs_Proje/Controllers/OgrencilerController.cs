@@ -79,6 +79,7 @@ namespace Obs_Proje.Controllers
         // GET: Ogrenciler/Create
         public IActionResult Create()
         {
+            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Adi");
             return View();
         }
 
@@ -87,7 +88,7 @@ namespace Obs_Proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Adi,Soyadi,OkulNo,Bolumu,Id")] Ogrenci ogrenci)
+        public async Task<IActionResult> Create(Ogrenci ogrenci)
         {
             if (ModelState.IsValid)
             {
@@ -111,6 +112,7 @@ namespace Obs_Proje.Controllers
             {
                 return NotFound();
             }
+            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Adi", ogrenci.BolumId);
             return View(ogrenci);
         }
 
@@ -119,7 +121,7 @@ namespace Obs_Proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Adi,Soyadi,OkulNo,Id")] Ogrenci ogrenci)
+        public async Task<IActionResult> Edit(int id,  Ogrenci ogrenci)
         {
             if (id != ogrenci.Id)
             {
@@ -186,9 +188,55 @@ namespace Obs_Proje.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        public IActionResult DersEkle(int id)
+        {
+            var ogrenci = _context.Ogrenciler
+                .Include(it=>it.Dersler)
+                .FirstOrDefault(m => m.Id == id);
+            if (ogrenci != null)
+            {
+                var ogrenciDers = new OgrenciDersListeModel();
+                ogrenciDers.TamAdi = ogrenci.Adi + " " + ogrenci.Soyadi;
+                ogrenciDers.Dersler = ogrenci.Dersler.ToList();
+
+                ViewData["DersId"] = new SelectList(_context.Dersler.Where(x=>x.BolumId==ogrenci.BolumId), "Id", "Adi");
+
+                return View(ogrenciDers);
+            }
+            else
+                return NotFound();
+        }
+        
+        [HttpPost]
+        public IActionResult DersEkle(int id, int dersId)
+        {
+            var ogrenci = _context.Ogrenciler.Include(it => it.Dersler).FirstOrDefault(m => m.Id == id);
+
+            if (ogrenci != null)
+            {
+                var ogrenciDers = new OgrenciDersListeModel();
+                ogrenciDers.TamAdi = ogrenci.Adi + " " + ogrenci.Soyadi;
+                var ders = _context.Dersler.Find(dersId);
+                
+                ogrenci.Dersler.Add(ders);
+                _context.SaveChanges();
+
+                ogrenciDers.Dersler = ogrenci.Dersler.ToList();
+
+                ViewData["DersId"] = new SelectList(_context.Dersler, "Id", "Adi");
+
+                return View(ogrenciDers);
+            }
+            else
+                return NotFound();
+        }
+
         private bool OgrenciExists(int id)
         {
           return _context.Ogrenciler.Any(e => e.Id == id);
         }
     }
 }
+
+

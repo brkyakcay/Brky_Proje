@@ -69,7 +69,7 @@ namespace Obs_Proje.Controllers
         // GET: Ders/Create
         public IActionResult Create()
         {
-            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Id");
+            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Adi");
             ViewData["OgretmenId"] = new SelectList(_context.Ogretmenler, "Id", "Id");
             return View();
         }
@@ -142,7 +142,7 @@ namespace Obs_Proje.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Id", ders.BolumId);
+            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Adi", ders.BolumId);
             ViewData["OgretmenId"] = new SelectList(_context.Ogretmenler, "Id", "Id", ders.OgretmenId);
             return View(ders);
         }

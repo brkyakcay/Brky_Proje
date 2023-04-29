@@ -13,7 +13,6 @@ namespace Obs_Proje.Data
         [Display(Name = "Öğrenci Numarası")]
         public int OkulNo { get; set; } 
 
-
         public virtual List<Ders> Dersler { get; set; }
 
         public int? BolumId  { get; set; }
