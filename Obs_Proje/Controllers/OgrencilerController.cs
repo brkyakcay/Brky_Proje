@@ -183,11 +183,9 @@ namespace Obs_Proje.Controllers
             {
                 _context.Ogrenciler.Remove(ogrenci);
             }
-            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
 
         public IActionResult DersEkle(int id)
         {
@@ -200,7 +198,7 @@ namespace Obs_Proje.Controllers
                 ogrenciDers.TamAdi = ogrenci.Adi + " " + ogrenci.Soyadi;
                 ogrenciDers.Dersler = ogrenci.Dersler.ToList();
 
-                ViewData["DersId"] = new SelectList(_context.Dersler.Where(x=>x.BolumId==ogrenci.BolumId), "Id", "Adi");
+                ViewData["DersId"] = new SelectList(_context.Dersler.Where(x=>x.BolumId==ogrenci.BolumId && ), "Id", "Adi");
 
                 return View(ogrenciDers);
             }
