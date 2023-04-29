@@ -1,0 +1,20 @@
+﻿ @model BookItemViewModel
+<div class="row p-2 bg-white border rounded">
+    <div class="col-md-1 mt-1"><img class="img-fluid img-responsive product-image" src="/images/book.png"></div>
+    <div class="col-md-6 mt-1">
+        <h5>@Model.Name</h5>
+        <div class="d-flex flex-row">
+            <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+            <span>@Model.AuthorName</span>  
+        </div>
+        <div class="mt-1 mb-1 spec-1"><span>100 page</span><span class="dot"></span><span>sanat tarihi</span><span class="dot"></span><span>Best finish<br></span></div>
+        <div class="mt-1 mb-1 spec-1">
+            <span class="badge bg-primary">@Model.PageCount page</span>
+            <span class="badge bg-secondary">@Model.Category</span>
+            <span class="badge bg-success">@Model.PublisherName</span>
+            <span class="badge bg-success">@Model.TranslatorName</span>
+        </div>
+        <p class="text-justify text-truncate para mb-0">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
+    </div>
+
+</div>
