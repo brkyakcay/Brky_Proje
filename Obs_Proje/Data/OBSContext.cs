@@ -17,6 +17,8 @@ namespace Obs_Proje.Data
         public DbSet<Sehir> Sehirler { get; set; }
         public DbSet<Ilce> Ilceler { get; set; }
         public DbSet<Ogretmen> Ogretmenler { get; set; }
+        public DbSet<Departman> Departman { get; set; } 
+        public DbSet<Personel> Personel { get; set; }   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,9 +50,19 @@ namespace Obs_Proje.Data
             modelBuilder.Entity<Ogretmen>().HasData(
                 new Ogretmen { Id = 1, Adi = "Can", Soyadi = "Demirel", BolumId = 1, SicilNo = 001 }
                 );
+
+            modelBuilder.Entity<Personel>().HasData(
+                new Personel { Id=1, Adi="Mustafa", Soyadi="Nair", DepartmanId=1, SicilNo=001 }
+                );
+
+            modelBuilder.Entity<Departman>().HasData(
+                new Departman { Id=1, Adi="İdari İşler"}
+                );
         }
 
         public DbSet<Obs_Proje.Models.OgrenciViewModel> OgrenciViewModel { get; set; }
+
+        public DbSet<Obs_Proje.Models.PersonelViewModel> PersonelViewModel { get; set; }
     }
 
     public class WebUser : IdentityUser<int>

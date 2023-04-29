@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obs_Proje.Data;
 
@@ -11,9 +12,11 @@ using Obs_Proje.Data;
 namespace Obs_Proje.Migrations
 {
     [DbContext(typeof(OBSContext))]
-    partial class OBSContextModelSnapshot : ModelSnapshot
+    [Migration("20230429105908_PersonelViewAdded")]
+    partial class PersonelViewAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,13 +204,6 @@ namespace Obs_Proje.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Departman");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Adi = "İdari İşler"
-                        });
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Ders", b =>
@@ -402,16 +398,6 @@ namespace Obs_Proje.Migrations
                     b.HasIndex("DepartmanId");
 
                     b.ToTable("Personel");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Adi = "Mustafa",
-                            DepartmanId = 1,
-                            SicilNo = 1,
-                            Soyadi = "Nair"
-                        });
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Sehir", b =>

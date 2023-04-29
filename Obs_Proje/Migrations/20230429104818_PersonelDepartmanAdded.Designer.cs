@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obs_Proje.Data;
 
@@ -11,13 +12,15 @@ using Obs_Proje.Data;
 namespace Obs_Proje.Migrations
 {
     [DbContext(typeof(OBSContext))]
-    partial class OBSContextModelSnapshot : ModelSnapshot
+    [Migration("20230429104818_PersonelDepartmanAdded")]
+    partial class PersonelDepartmanAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -201,13 +204,6 @@ namespace Obs_Proje.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Departman");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Adi = "İdari İşler"
-                        });
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Ders", b =>
@@ -377,43 +373,6 @@ namespace Obs_Proje.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Obs_Proje.Data.Personel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Adi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DepartmanId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SicilNo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Soyadi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DepartmanId");
-
-                    b.ToTable("Personel");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Adi = "Mustafa",
-                            DepartmanId = 1,
-                            SicilNo = 1,
-                            Soyadi = "Nair"
-                        });
-                });
-
             modelBuilder.Entity("Obs_Proje.Data.Sehir", b =>
                 {
                     b.Property<int>("Id")
@@ -568,31 +527,6 @@ namespace Obs_Proje.Migrations
                     b.ToTable("OgrenciViewModel");
                 });
 
-            modelBuilder.Entity("Obs_Proje.Models.PersonelViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Adi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DepartmanAdi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SicilNo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Soyadı")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PersonelViewModel");
-                });
-
             modelBuilder.Entity("DersOgrenci", b =>
                 {
                     b.HasOne("Obs_Proje.Data.Ders", null)
@@ -724,17 +658,6 @@ namespace Obs_Proje.Migrations
                     b.Navigation("Adres");
 
                     b.Navigation("Bolum");
-                });
-
-            modelBuilder.Entity("Obs_Proje.Data.Personel", b =>
-                {
-                    b.HasOne("Obs_Proje.Data.Departman", "Departman")
-                        .WithMany()
-                        .HasForeignKey("DepartmanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Departman");
                 });
 
             modelBuilder.Entity("Obs_Proje.Data.Adres", b =>
