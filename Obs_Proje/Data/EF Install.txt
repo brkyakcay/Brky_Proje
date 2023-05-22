@@ -46,6 +46,24 @@ var data = await _context.Ogrenciler.ToListAsync();
         public virtual Bolum Bolum { get; set; }
         public virtual Adres Adres { get; set; }
 
+---------------------------------------------
 
+var oBSContext = _context.Personel
+                .Include(p => p.Departman)
+                .ToListAsync();
+
+            var viewData = from personel in await oBSContext
+                           select new PersonelViewModel()
+                           {
+                               Id = personel.Id,    
+                               Adi = personel.Adi,  
+                               Soyadi=personel.Soyadi,  
+                               SicilNo =personel.SicilNo,   
+                               DepartmanAdi =personel.Departman.Adi, 
+                           };
+            var PersonelSayisi = _context.Personel.Count();
+            ViewBag.PersonelSayisi = PersonelSayisi;
+
+            return View(viewData);  
 
 

@@ -22,30 +22,50 @@ namespace Obs_Proje.Controllers
         // GET: Personel
         public async Task<IActionResult> Index()
         {
-              return View(await _context.PersonelViewModel.ToListAsync());
+            var oBSContext = _context.Personel
+                .Include(p => p.Departman)
+                .ToListAsync();
+
+            var viewData = from personel in await oBSContext
+                           select new PersonelViewModel()
+                           {
+                               Id = personel.Id,
+                               Adi = personel.Adi,
+                               Soyadi = personel.Soyadi,
+                               SicilNo = personel.SicilNo,
+                               DepartmanAdi = personel.Departman.Adi,
+                           };
+            var PersonelSayisi = _context.Personel.Count();
+            ViewBag.PersonelSayisi = PersonelSayisi;
+
+            return View(viewData);
+            
+            //return View(await oBSContext.ToListAsync());
         }
 
         // GET: Personel/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.PersonelViewModel == null)
+            if (id == null || _context.Personel == null)
             {
                 return NotFound();
             }
 
-            var personelViewModel = await _context.PersonelViewModel
+            var personel = await _context.Personel
+                .Include(p => p.Departman)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (personelViewModel == null)
+            if (personel == null)
             {
                 return NotFound();
             }
 
-            return View(personelViewModel);
+            return View(personel);
         }
 
         // GET: Personel/Create
         public IActionResult Create()
         {
+            ViewData["DepartmanId"] = new SelectList(_context.Departman, "Id", "Id");
             return View();
         }
 
@@ -54,31 +74,33 @@ namespace Obs_Proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Adi,Soyadı,SicilNo,DepartmanAdi")] PersonelViewModel personelViewModel)
+        public async Task<IActionResult> Create([Bind("Adi,Soyadi,SicilNo,DepartmanId,Id")] Personel personel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(personelViewModel);
+                _context.Add(personel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(personelViewModel);
+            ViewData["DepartmanId"] = new SelectList(_context.Departman, "Id", "Id", personel.DepartmanId);
+            return View(personel);
         }
 
         // GET: Personel/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.PersonelViewModel == null)
+            if (id == null || _context.Personel == null)
             {
                 return NotFound();
             }
 
-            var personelViewModel = await _context.PersonelViewModel.FindAsync(id);
-            if (personelViewModel == null)
+            var personel = await _context.Personel.FindAsync(id);
+            if (personel == null)
             {
                 return NotFound();
             }
-            return View(personelViewModel);
+            ViewData["DepartmanId"] = new SelectList(_context.Departman, "Id", "Id", personel.DepartmanId);
+            return View(personel);
         }
 
         // POST: Personel/Edit/5
@@ -86,9 +108,9 @@ namespace Obs_Proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Adi,Soyadı,SicilNo,DepartmanAdi")] PersonelViewModel personelViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Adi,Soyadi,SicilNo,DepartmanId,Id")] Personel personel)
         {
-            if (id != personelViewModel.Id)
+            if (id != personel.Id)
             {
                 return NotFound();
             }
@@ -97,12 +119,12 @@ namespace Obs_Proje.Controllers
             {
                 try
                 {
-                    _context.Update(personelViewModel);
+                    _context.Update(personel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PersonelViewModelExists(personelViewModel.Id))
+                    if (!PersonelExists(personel.Id))
                     {
                         return NotFound();
                     }
@@ -113,25 +135,27 @@ namespace Obs_Proje.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(personelViewModel);
+            ViewData["DepartmanId"] = new SelectList(_context.Departman, "Id", "Id", personel.DepartmanId);
+            return View(personel);
         }
 
         // GET: Personel/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.PersonelViewModel == null)
+            if (id == null || _context.Personel == null)
             {
                 return NotFound();
             }
 
-            var personelViewModel = await _context.PersonelViewModel
+            var personel = await _context.Personel
+                .Include(p => p.Departman)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (personelViewModel == null)
+            if (personel == null)
             {
                 return NotFound();
             }
 
-            return View(personelViewModel);
+            return View(personel);
         }
 
         // POST: Personel/Delete/5
@@ -139,23 +163,23 @@ namespace Obs_Proje.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.PersonelViewModel == null)
+            if (_context.Personel == null)
             {
-                return Problem("Entity set 'OBSContext.PersonelViewModel'  is null.");
+                return Problem("Entity set 'OBSContext.Personel'  is null.");
             }
-            var personelViewModel = await _context.PersonelViewModel.FindAsync(id);
-            if (personelViewModel != null)
+            var personel = await _context.Personel.FindAsync(id);
+            if (personel != null)
             {
-                _context.PersonelViewModel.Remove(personelViewModel);
+                _context.Personel.Remove(personel);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PersonelViewModelExists(int id)
+        private bool PersonelExists(int id)
         {
-          return _context.PersonelViewModel.Any(e => e.Id == id);
+          return _context.Personel.Any(e => e.Id == id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Obs_Proje.Models.PersonelViewModel>
+﻿@*@model IEnumerable<Obs_Proje.Data.Personel>*@
+@model IEnumerable<PersonelViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,11 +13,12 @@
 <table class="table">
     <thead>
         <tr>
+            <h5>Sisteme Kayıtlı Personel Sayısı: @ViewBag.PersonelSayisi</h5>
             <th>
                 @Html.DisplayNameFor(model => model.Adi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Soyadı)
+                @Html.DisplayNameFor(model => model.Soyadi)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SicilNo)
@@ -34,7 +36,7 @@
                 @Html.DisplayFor(modelItem => item.Adi)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Soyadı)
+                @Html.DisplayFor(modelItem => item.Soyadi)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SicilNo)

@@ -3,8 +3,24 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Kocaeli Üniversitesi</h1>
+    <h1 class="display-4">Üniversite Yönetim Sistemi</h1>
     
-    <h1 class="display-5">Öğrenci Bilgi Sistemi</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @*<h1 class="display-5">Öğrenci Bilgi Sistemi</h1>*@
+    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+    
+    <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+                <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Öğrenciler (@ViewBag.OgrenciSayisi)</h3>
+
+            </div>
+        </div>
+        <hr />
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+                <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Dersler (@ViewBag.DersSayisi)</h3>
+
+            </div>
+        </div>
+    </div>
 </div>

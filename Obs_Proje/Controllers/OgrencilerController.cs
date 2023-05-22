@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Obs_Proje.Data;
 using Obs_Proje.Models;
 
@@ -61,6 +62,7 @@ namespace Obs_Proje.Controllers
         // GET: Ogrenciler/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            
             if (id == null || _context.Ogrenciler == null)
             {
                 return NotFound();
@@ -72,7 +74,7 @@ namespace Obs_Proje.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Adi", ogrenci.BolumId);
             return View(ogrenci);
         }
 
@@ -96,6 +98,7 @@ namespace Obs_Proje.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            TempData["BasariliMesaji3"] = "Öğrenci Başarıyla Eklendi";
             return View(ogrenci);
         }
 
@@ -198,8 +201,7 @@ namespace Obs_Proje.Controllers
                 ogrenciDers.TamAdi = ogrenci.Adi + " " + ogrenci.Soyadi;
                 ogrenciDers.Dersler = ogrenci.Dersler.ToList();
 
-                ViewData["DersId"] = new SelectList(_context.Dersler.Where(x=>x.BolumId==ogrenci.BolumId && ), "Id", "Adi");
-
+                ViewData["DersId"] = new SelectList(_context.Dersler.Where(x => x.BolumId == ogrenci.BolumId), "Id", "Adi");
                 return View(ogrenciDers);
             }
             else
@@ -209,25 +211,66 @@ namespace Obs_Proje.Controllers
         [HttpPost]
         public IActionResult DersEkle(int id, int dersId)
         {
-            var ogrenci = _context.Ogrenciler.Include(it => it.Dersler).FirstOrDefault(m => m.Id == id);
+            var ogrenci = _context.Ogrenciler
+                .Include(it => it.Dersler)
+                .FirstOrDefault(m => m.Id == id);
 
             if (ogrenci != null)
             {
+                if (ogrenci.Dersler.Any(d => d.Id == dersId))
+                {                    
+                    TempData["UyariMesaji"] = "Bu ders zaten öğrenciye eklenmiş.";
+                    //ViewBag.UyariMesaji = "Bu ders zaten öğrenciye eklenmiş.";
+                    return RedirectToAction("DersEkle", new { id });
+                }
+
                 var ogrenciDers = new OgrenciDersListeModel();
                 ogrenciDers.TamAdi = ogrenci.Adi + " " + ogrenci.Soyadi;
                 var ders = _context.Dersler.Find(dersId);
-                
+
+               
+
                 ogrenci.Dersler.Add(ders);
                 _context.SaveChanges();
 
                 ogrenciDers.Dersler = ogrenci.Dersler.ToList();
 
-                ViewData["DersId"] = new SelectList(_context.Dersler, "Id", "Adi");
+                ViewData["DersId"] = new SelectList(_context.Dersler.Where(x => x.BolumId == ogrenci.BolumId), "Id", "Adi");
 
+                TempData["BasariliMesaji"] = "Ders ekleme işlemi başarıyla gerçekleştirildi.";
+                //ViewBag.BasariliMesaji = "Ders ekleme başarıyla gerçekleştirildi.";
                 return View(ogrenciDers);
             }
             else
                 return NotFound();
+        }
+
+        public IActionResult DersSil(int id, int dersId)
+        {
+            var ogrenci = _context.Ogrenciler.Include(it => it.Dersler).FirstOrDefault(m => m.Id == id);
+
+            if (ogrenci != null)
+            {
+                var ders = ogrenci.Dersler.FirstOrDefault(d => d.Id == dersId);
+
+                if (ders != null)
+                {
+                    ogrenci.Dersler.Remove(ders);
+                    _context.SaveChanges();
+
+                    TempData["BasariliMesaji2"] = "Ders silme başarıyla gerçekleştirildi.";
+                }
+                else
+                {
+                    TempData["UyariMesaji2"] = "Bu ders öğrencide bulunamadı.";
+                }
+
+                return RedirectToAction("DersEkle", new { id });
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         private bool OgrenciExists(int id)

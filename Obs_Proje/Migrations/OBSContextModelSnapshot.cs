@@ -585,7 +585,7 @@ namespace Obs_Proje.Migrations
                     b.Property<int>("SicilNo")
                         .HasColumnType("int");
 
-                    b.Property<string>("Soyadı")
+                    b.Property<string>("Soyadi")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

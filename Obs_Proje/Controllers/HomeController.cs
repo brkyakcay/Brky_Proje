@@ -15,6 +15,13 @@ namespace Obs_Proje.Controllers
 
         public IActionResult Index()
         {
+            //var home = new HomePageModel
+            //{
+            //    OgrenciSayisi = ViewBag.OgrenciSayisi,  
+            //    OgretmenSayisi  = ViewBag.OgretmenSayisi,   
+            //    DersSayisi = ViewBag.DersSayisi,
+            //    PersonelSayisi = ViewBag.PersonelSayisi,    
+            //};
             return View();
         }
 

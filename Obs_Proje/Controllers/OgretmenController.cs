@@ -70,7 +70,7 @@ namespace Obs_Proje.Controllers
         public IActionResult Create()
         {
             ViewData["AdresId"] = new SelectList(_context.Adresler, "Id", "Id");
-            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Id");
+            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Adi");
             return View();
         }
 
@@ -79,8 +79,9 @@ namespace Obs_Proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Adi,Soyadi,SicilNo,BolumId,AdresId,Id")] Ogretmen ogretmen)
+        public async Task<IActionResult> Create(Ogretmen ogretmen)
         {
+            //[Bind("Adi,Soyadi,SicilNo,BolumId,AdresId,Id")]
             if (ModelState.IsValid)
             {
                 _context.Add(ogretmen);
@@ -88,7 +89,7 @@ namespace Obs_Proje.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AdresId"] = new SelectList(_context.Adresler, "Id", "Id", ogretmen.AdresId);
-            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Id", ogretmen.BolumId);
+            ViewData["BolumId"] = new SelectList(_context.Bolumler, "Id", "Adi", ogretmen.BolumId, ogretmen.Bolum.Adi);
             return View(ogretmen);
         }
 
@@ -184,6 +185,58 @@ namespace Obs_Proje.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DersEkle(int id)
+        {
+            var ogretmen = _context.Ogretmenler
+                .Include(it => it.Dersler)
+                .FirstOrDefault(m => m.Id == id);
+
+            if (ogretmen != null)
+            {
+                var ogretmenDers = new OgretmenDersEkleModel();
+                ogretmenDers.TamAdi = ogretmen.Adi + " " + ogretmen.Soyadi;
+                ogretmenDers.Dersler = ogretmen.Dersler.ToList();
+
+                ViewData["DersId"] = new SelectList(_context.Dersler.Where(x => x.BolumId == ogretmen.BolumId), "Id", "Adi");
+                return View(ogretmenDers);
+            }
+            else
+                return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult DersEkle(int id, int dersId)
+        {
+            var ogretmen = _context.Ogretmenler
+                 .Include(it => it.Dersler)
+                 .FirstOrDefault(m => m.Id == id);
+
+            if (ogretmen != null)
+            {
+                if (ogretmen.Dersler.Any(d => d.Id == dersId))
+                {
+                    TempData["UyariMesaji"] = "Bu ders zaten öğrenciye eklenmiş.";
+                    //ViewBag.UyariMesaji = "Bu ders zaten öğrenciye eklenmiş.";
+                    return RedirectToAction("DersEkle", new { id });
+                }
+
+                var ogretmenDers = new OgretmenDersEkleModel();
+                ogretmenDers.TamAdi = ogretmen.Adi + " " + ogretmen.Soyadi;
+                var ders = _context.Dersler.Find(dersId);
+
+                ogretmen.Dersler.Add(ders);
+                _context.SaveChanges();
+
+                ogretmenDers.Dersler = ogretmen.Dersler.ToList();
+
+                ViewData["DersId"] = new SelectList(_context.Dersler.Where(x => x.BolumId == ogretmen.BolumId), "Id", "Adi");
+                TempData["BasariliMesaji"] = "Ders ekleme işlemi başarıyla gerçekleştirildi.";
+                return View(ogretmenDers);
+            }
+            else
+                return NotFound();  
         }
 
         private bool OgretmenExists(int id)
